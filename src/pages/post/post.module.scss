@@ -46,6 +46,16 @@
         text-transform: capitalize;
       }
     }
+
+    .lastPublicationDate {
+      display: block;
+      margin-top: 1.6rem;
+
+      font-size: 1.4rem;
+      font-style: italic;
+      line-height: 1.7rem;
+      color: var(--info);
+    }
   }
 
   .postContentContainer {

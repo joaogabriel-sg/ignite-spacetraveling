@@ -20,6 +20,7 @@ import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     banner: {
@@ -63,6 +64,8 @@ export default function Post({ post }: PostProps): JSX.Element {
   const amountWordsContent = amountWordsOfHeading + amountWordsOfBody;
   const readingTime = Math.ceil(amountWordsContent / 200);
 
+  const isEdited = post.first_publication_date !== post.last_publication_date;
+
   return (
     <>
       <Head>
@@ -98,6 +101,18 @@ export default function Post({ post }: PostProps): JSX.Element {
                 <span>{readingTime} min</span>
               </div>
             </section>
+
+            {isEdited && (
+              <time
+                dateTime={post.last_publication_date}
+                className={styles.lastPublicationDate}
+              >
+                {formatDate(
+                  post.last_publication_date,
+                  "'* editado em' dd MMM yyyy', às' HH:mm"
+                )}
+              </time>
+            )}
           </header>
 
           <div className={styles.postContentContainer}>
