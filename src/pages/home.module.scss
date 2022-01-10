@@ -1,1 +1,70 @@
-// TODO
+.container {
+  padding: 7.955rem 0 8rem;
+}
+
+.posts {
+  margin: 4.082rem 0 6.4rem;
+}
+
+.post {
+  & + & {
+    margin-top: 4.8rem;
+  }
+
+  a {
+    display: block;
+
+    strong {
+      font-size: 2.8rem;
+      line-height: 3.4rem;
+      letter-spacing: -0.5px;
+      color: var(--heading);
+    }
+
+    p {
+      margin-top: 0.8rem;
+
+      font-size: 1.8rem;
+      line-height: 2.2rem;
+      color: var(--body);
+    }
+
+    footer {
+      margin-top: 2.4rem;
+
+      display: flex;
+      align-items: center;
+      gap: 2.6rem;
+
+      font-size: 1.4rem;
+      line-height: 1.7rem;
+      color: var(--info);
+
+      div {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+
+      svg {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      time {
+        display: block;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.loadMoreButton {
+  background: transparent;
+  border: none;
+
+  font-size: 1.8rem;
+  font-weight: 600;
+  line-height: 2.2rem;
+  color: var(--highlight);
+}
