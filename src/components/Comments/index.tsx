@@ -1,21 +1,24 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 export default function Comments(): JSX.Element {
-  const commentsRef = useRef<HTMLDivElement>(null);
-
   useEffect(() => {
-    if (commentsRef) {
-      const script = document.createElement('script');
-      script.setAttribute('src', 'https://utteranc.es/client.js');
-      script.setAttribute('crossorigin', 'anonymous');
-      script.setAttribute('async', 'true');
-      script.setAttribute('repo', process.env.NEXT_PUBLIC_UTTERANC_GITHUB_REPO);
-      script.setAttribute('issue-term', 'pathname');
-      script.setAttribute('theme', 'photon-dark');
+    const script = document.createElement('script');
 
-      commentsRef.current.appendChild(script);
-    }
-  }, []);
+    script.src = 'https://utteranc.es/client.js';
+    script.async = true;
+    script.setAttribute('repo', process.env.NEXT_PUBLIC_UTTERANC_GITHUB_REPO);
+    script.setAttribute('issue-term', 'pathname');
+    script.setAttribute('label', 'Comment');
+    script.setAttribute('theme', 'dark-blue');
+    script.setAttribute('crossorigin', 'anonymous');
 
-  return <div ref={commentsRef} />;
+    const scriptParentNode = document.getElementById('comments');
+    scriptParentNode.appendChild(script);
+
+    return () => {
+      scriptParentNode.removeChild(scriptParentNode.firstChild);
+    };
+  });
+
+  return <div id="comments" />;
 }

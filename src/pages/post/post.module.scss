@@ -91,6 +91,47 @@
       }
     }
   }
+
+  footer {
+    section {
+      margin-bottom: 8rem;
+
+      display: grid;
+      grid-template-columns: max-content max-content;
+      grid-template-areas: 'prevPost nextPost';
+      justify-content: space-between;
+
+      span {
+        display: block;
+
+        font-size: 1.8rem;
+        line-height: 2.2rem;
+        letter-spacing: -0.5px;
+        color: var(--heading);
+      }
+
+      strong {
+        display: block;
+        margin-top: 0.8rem;
+
+        font-size: 1.6rem;
+        font-weight: 600;
+        line-height: 1.9rem;
+        letter-spacing: -0.5px;
+        color: var(--highlight);
+      }
+
+      .nextPost {
+        grid-area: prevPost;
+        text-align: left;
+      }
+
+      .nextPost {
+        grid-area: nextPost;
+        text-align: right;
+      }
+    }
+  }
 }
 
 .divider {
