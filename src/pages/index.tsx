@@ -8,6 +8,7 @@ import { FiCalendar, FiUser } from 'react-icons/fi';
 import { getPrismicClient } from '../services/prismic';
 
 import Header from '../components/Header';
+import PreviewButton from '../components/PreviewButton';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
@@ -29,10 +30,14 @@ interface PostPagination {
 }
 
 interface HomeProps {
+  isPreviewMode: boolean;
   postsPagination: PostPagination;
 }
 
-export default function Home({ postsPagination }: HomeProps): JSX.Element {
+export default function Home({
+  isPreviewMode,
+  postsPagination,
+}: HomeProps): JSX.Element {
   const [posts, setPosts] = useState(postsPagination.results);
   const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
@@ -89,18 +94,26 @@ export default function Home({ postsPagination }: HomeProps): JSX.Element {
             Carregar mais posts
           </button>
         )}
+
+        {isPreviewMode && (
+          <div className={styles.previewContainer}>
+            <PreviewButton />
+          </div>
+        )}
       </main>
     </div>
   );
 }
 
-export const getStaticProps: GetStaticProps<HomeProps> = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+}) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     [Prismic.Predicates.at('document.type', 'posts')],
     {
       fetch: ['post.title', 'post.subtitle', 'post.author'],
-      pageSize: 1,
+      pageSize: 2,
     }
   );
 
@@ -119,6 +132,7 @@ export const getStaticProps: GetStaticProps<HomeProps> = async () => {
 
   return {
     props: {
+      isPreviewMode: preview,
       postsPagination,
     },
     revalidate: 60 * 1, // 1 minute

@@ -5,6 +5,11 @@ export default class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <script
+            async
+            defer
+            src={process.env.NEXT_PUBLIC_PRISMIC_PREVIEW_SCRIPT_SRC}
+          />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

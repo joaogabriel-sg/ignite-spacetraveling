@@ -14,10 +14,11 @@ import formatDate from '../../utils/formatDate';
 import getAmountOfWords from '../../utils/getAmountOfWords';
 
 import Header from '../../components/Header';
+import Comments from '../../components/Comments';
+import PreviewButton from '../../components/PreviewButton';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import Comments from '../../components/Comments';
 
 interface Post {
   first_publication_date: string | null;
@@ -45,12 +46,14 @@ interface PrevAndNextPost {
 }
 
 interface PostProps {
+  isPreviewMode: boolean;
   post: Post;
   prevPost: PrevAndNextPost;
   nextPost: PrevAndNextPost;
 }
 
 export default function Post({
+  isPreviewMode,
   post,
   prevPost,
   nextPost,
@@ -166,6 +169,12 @@ export default function Post({
             </section>
 
             <Comments />
+
+            {isPreviewMode && (
+              <div className={styles.previewContainer}>
+                <PreviewButton />
+              </div>
+            )}
           </footer>
         </article>
       </main>
@@ -187,11 +196,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps<PostProps> = async context => {
-  const { slug } = context.params;
+export const getStaticProps: GetStaticProps<PostProps> = async ({
+  params,
+  preview = false,
+  previewData,
+}) => {
+  const { slug } = params;
 
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('posts', String(slug), {});
+  const response = await prismic.getByUID('posts', String(slug), {
+    ref: previewData?.ref ?? null,
+  });
 
   const prevResponse = await prismic.query(
     Prismic.Predicates.at('document.type', 'posts'),
@@ -215,10 +230,11 @@ export const getStaticProps: GetStaticProps<PostProps> = async context => {
 
   return {
     props: {
+      isPreviewMode: preview,
       post: response,
       prevPost: prevResponse.results[0] || null,
       nextPost: nextResponse.results[0] || null,
     },
-    revalidate: 60 * 30, // 30 minutes
+    revalidate: 60 * 5, // 5 minutes
   };
 };
